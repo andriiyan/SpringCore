@@ -3,7 +3,7 @@ package com.github.andriiyan.sprongtraining.api.model;
 /**
  * Created by maksym_govorischev on 14/03/14.
  */
-public interface User {
+public interface User extends Identifierable {
     /**
      * User Id. UNIQUE.
      * @return User Id.

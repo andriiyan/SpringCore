@@ -3,14 +3,22 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <bean id="eventService" class="com.github.andriiyan.sprongtraining.impl.service.EventServiceImpl"/>
-    <bean id="ticketService" class="com.github.andriiyan.sprongtraining.impl.service.TicketServiceImpl"/>
-    <bean id="userService" class="com.github.andriiyan.sprongtraining.impl.service.UserServiceImpl"/>
+    <bean id="eventDao" class="com.github.andriiyan.sprongtraining.impl.dao.EventDaoImpl"/>
+    <bean id="ticketDao" class="com.github.andriiyan.sprongtraining.impl.dao.TicketDaoImpl"/>
+    <bean id="userDao" class="com.github.andriiyan.sprongtraining.impl.dao.UserDaoImpl"/>
+    <bean id="eventService" class="com.github.andriiyan.sprongtraining.impl.service.EventServiceImpl">
+        <property name="eventDao" ref="eventDao"/> <!-- task requirement: dao should be injected via setters -->
+    </bean>
+    <bean id="ticketService" class="com.github.andriiyan.sprongtraining.impl.service.TicketServiceImpl">
+        <property name="ticketDao" ref="ticketDao"/> <!-- task requirement: dao should be injected via setters -->
+    </bean>
+    <bean id="userService" class="com.github.andriiyan.sprongtraining.impl.service.UserServiceImpl">
+        <property name="userDao" ref="userDao"/> <!-- task requirement: dao should be injected via setters -->
+    </bean>
     <bean id="bookingFacade" class="com.github.andriiyan.sprongtraining.impl.facade.BookingFacadeImpl">
-        <constructor-arg ref="eventService" />
-        <constructor-arg ref="ticketService" />
-        <constructor-arg ref="userService" />
+        <constructor-arg ref="eventService"/>
+        <constructor-arg ref="ticketService"/>
+        <constructor-arg ref="userService"/>
     </bean>
     <!-- more bean definitions go here -->
 

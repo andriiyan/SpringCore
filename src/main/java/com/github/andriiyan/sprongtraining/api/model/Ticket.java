@@ -3,7 +3,7 @@ package com.github.andriiyan.sprongtraining.api.model;
 /**
  * Created by maksym_govorischev.
  */
-public interface Ticket {
+public interface Ticket extends Identifierable {
     enum Category {STANDARD, PREMIUM, BAR}
 
     /**

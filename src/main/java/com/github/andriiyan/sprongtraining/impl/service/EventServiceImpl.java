@@ -1,39 +1,67 @@
 package com.github.andriiyan.sprongtraining.impl.service;
 
+import com.github.andriiyan.sprongtraining.api.dao.EventDao;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.service.EventService;
+import com.github.andriiyan.sprongtraining.impl.StreamUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class EventServiceImpl implements EventService {
+
+    @Autowired
+    private EventDao eventDao;
+
     @Override
     public Event getEventById(long eventId) {
-        return null;
+        return eventDao.findById(eventId);
     }
 
     @Override
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
-        return null;
+        // TODO: ask where better to do it.
+        //  of course DB query should be mush faster, but for in-memory storage I guess speed is almost same, isn't it ?
+        return StreamUtils.paging(eventDao.findAll()
+                        .stream()
+                        .filter(event -> event.getTitle().contains(title)), pageNum, pageSize)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
-        return null;
+        final Instant requestedDay = day.toInstant().truncatedTo(ChronoUnit.DAYS);
+        // TODO: ask where better to do it.
+        //  of course DB query should be mush faster, but for in-memory storage I guess speed is almost same, isn't it ?
+        return StreamUtils.paging(
+                eventDao.findAll()
+                        .stream()
+                        .filter(event -> event.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).equals(requestedDay)),
+                pageNum,
+                pageSize
+        ).collect(Collectors.toList());
     }
 
     @Override
     public Event createEvent(Event event) {
-        return null;
+        return eventDao.save(event);
     }
 
     @Override
     public Event updateEvent(Event event) {
-        return null;
+        return eventDao.update(event);
     }
 
     @Override
     public boolean deleteEvent(long eventId) {
-        return false;
+        return eventDao.delete(eventId);
+    }
+
+    public void setEventDao(EventDao eventDao) {
+        this.eventDao = eventDao;
     }
 }
