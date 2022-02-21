@@ -1,5 +1,6 @@
 package com.github.andriiyan.sprongtraining;
 
+import com.github.andriiyan.sprongtraining.api.facade.BookingFacade;
 import com.github.andriiyan.sprongtraining.api.service.EventService;
 import com.github.andriiyan.sprongtraining.api.service.TicketService;
 import com.github.andriiyan.sprongtraining.api.service.UserService;
@@ -13,6 +14,7 @@ public class Main {
         final EventService eventService = context.getBean(EventService.class);
         final TicketService ticketService = context.getBean(TicketService.class);
         final UserService userService = context.getBean(UserService.class);
+        final BookingFacade bookingFacade = context.getBean(BookingFacade.class);
     }
 
 }
