@@ -4,7 +4,7 @@ package com.github.andriiyan.sprongtraining.api.model;
  * Created by maksym_govorischev.
  */
 public interface Ticket {
-    public enum Category {STANDARD, PREMIUM, BAR}
+    enum Category {STANDARD, PREMIUM, BAR}
 
     /**
      * Ticket Id. UNIQUE.
