@@ -1,8 +1,14 @@
 package com.github.andriiyan.sprongtraining.impl.model;
 
 import com.github.andriiyan.sprongtraining.api.model.Ticket;
+import com.github.andriiyan.sprongtraining.impl.utils.JsonInstanceCreator;
+import com.google.gson.Gson;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 class TicketImpl implements Ticket {
+    private static final long serialVersionUID = 1L;
 
     private long id;
     private long eventId;
@@ -66,5 +72,13 @@ class TicketImpl implements Ticket {
     @Override
     public void setPlace(int place) {
         this.place = place;
+    }
+
+    public static class TicketJsonInstanceCreator implements JsonInstanceCreator<Ticket> {
+
+        @Override
+        public Collection<Ticket> createInstances(String source, Gson gson) {
+            return Arrays.asList(gson.fromJson(source, TicketImpl[].class));
+        }
     }
 }

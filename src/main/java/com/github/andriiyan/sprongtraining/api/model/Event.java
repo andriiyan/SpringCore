@@ -1,11 +1,12 @@
 package com.github.andriiyan.sprongtraining.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by maksym_govorischev.
  */
-public interface Event extends Identifierable {
+public interface Event extends Identifierable, Serializable {
     /**
      * Event id. UNIQUE.
      * @return Event Id

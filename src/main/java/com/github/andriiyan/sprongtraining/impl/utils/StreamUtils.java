@@ -1,4 +1,4 @@
-package com.github.andriiyan.sprongtraining.impl;
+package com.github.andriiyan.sprongtraining.impl.utils;
 
 import java.util.stream.Stream;
 

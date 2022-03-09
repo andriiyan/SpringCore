@@ -49,4 +49,9 @@ public interface BaseDao<T extends Identifierable> {
      */
     boolean delete(long id);
 
+    /**
+     * Initializes storage with some data if it's specified in config.
+     */
+    void initialize();
+
 }

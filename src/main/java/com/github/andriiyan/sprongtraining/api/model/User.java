@@ -1,9 +1,11 @@
 package com.github.andriiyan.sprongtraining.api.model;
 
+import java.io.Serializable;
+
 /**
  * Created by maksym_govorischev on 14/03/14.
  */
-public interface User extends Identifierable {
+public interface User extends Identifierable, Serializable {
     /**
      * User Id. UNIQUE.
      * @return User Id.

@@ -1,9 +1,11 @@
 package com.github.andriiyan.sprongtraining.api.model;
 
+import java.io.Serializable;
+
 /**
  * Created by maksym_govorischev.
  */
-public interface Ticket extends Identifierable {
+public interface Ticket extends Identifierable, Serializable {
     enum Category {STANDARD, PREMIUM, BAR}
 
     /**

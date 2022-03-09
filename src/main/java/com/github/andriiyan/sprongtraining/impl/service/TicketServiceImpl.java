@@ -5,7 +5,7 @@ import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.model.Ticket;
 import com.github.andriiyan.sprongtraining.api.model.User;
 import com.github.andriiyan.sprongtraining.api.service.TicketService;
-import com.github.andriiyan.sprongtraining.impl.StreamUtils;
+import com.github.andriiyan.sprongtraining.impl.utils.StreamUtils;
 import com.github.andriiyan.sprongtraining.impl.model.ModelsFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 

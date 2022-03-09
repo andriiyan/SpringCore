@@ -1,8 +1,14 @@
 package com.github.andriiyan.sprongtraining.impl.model;
 
 import com.github.andriiyan.sprongtraining.api.model.User;
+import com.github.andriiyan.sprongtraining.impl.utils.JsonInstanceCreator;
+import com.google.gson.Gson;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 class UserImpl implements User {
+    private static final long serialVersionUID = 1L;
 
     private long id;
     private String name;
@@ -42,5 +48,13 @@ class UserImpl implements User {
     @Override
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public static class UserJsonInstanceCreator implements JsonInstanceCreator<User> {
+
+        @Override
+        public Collection<User> createInstances(String source, Gson gson) {
+            return Arrays.asList(gson.fromJson(source, UserImpl[].class));
+        }
     }
 }
