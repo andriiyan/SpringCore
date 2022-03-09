@@ -3,7 +3,7 @@ package com.github.andriiyan.sprongtraining.impl.service;
 import com.github.andriiyan.sprongtraining.api.dao.EventDao;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.service.EventService;
-import com.github.andriiyan.sprongtraining.impl.StreamUtils;
+import com.github.andriiyan.sprongtraining.impl.utils.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;

@@ -1,10 +1,15 @@
 package com.github.andriiyan.sprongtraining.impl.model;
 
 import com.github.andriiyan.sprongtraining.api.model.Event;
+import com.github.andriiyan.sprongtraining.impl.utils.JsonInstanceCreator;
+import com.google.gson.Gson;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
 class EventImpl implements Event {
+    private static final long serialVersionUID = 1L;
 
     private long id;
     private String title;
@@ -44,5 +49,13 @@ class EventImpl implements Event {
     @Override
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public static class EventJsonInstanceCreator implements JsonInstanceCreator<Event> {
+
+        @Override
+        public Collection<Event> createInstances(String source, Gson gson) {
+            return Arrays.asList(gson.fromJson(source, EventImpl[].class));
+        }
     }
 }

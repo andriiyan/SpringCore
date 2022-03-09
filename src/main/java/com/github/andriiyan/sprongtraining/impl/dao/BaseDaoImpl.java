@@ -2,14 +2,27 @@ package com.github.andriiyan.sprongtraining.impl.dao;
 
 import com.github.andriiyan.sprongtraining.api.dao.BaseDao;
 import com.github.andriiyan.sprongtraining.api.model.Identifierable;
+import com.github.andriiyan.sprongtraining.impl.utils.JsonInstanceCreator;
+import com.github.andriiyan.sprongtraining.impl.utils.file.FileUtils;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
+abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
 
-    protected final Map<Long, T> mStorage = new HashMap<>();
+    @NonNull
+    private final Map<Long, T> mStorage = new HashMap<>();
+    @Nullable
+    private String initializationFilePath;
+    @Nullable
+    private FileUtils fileUtils;
+    @Nullable
+    private JsonInstanceCreator<T> instanceCreator;
 
     @Override
     public T save(T model) {
@@ -42,5 +55,36 @@ class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
     @Override
     public boolean delete(long id) {
         return mStorage.remove(id) != null;
+    }
+
+    @Override
+    public void initialize() {
+        if (initializationFilePath != null && !initializationFilePath.isBlank() && fileUtils != null) {
+            initialize(new File(initializationFilePath));
+        }
+    }
+
+    protected void initialize(File file) {
+        if (fileUtils == null) return;
+        try {
+            final Collection<T> models = fileUtils.readFromFile(file, instanceCreator);
+            for (T model : models) {
+                save(model);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setInitializationFilePath(String initializationFilePath) {
+        this.initializationFilePath = initializationFilePath;
+    }
+
+    public void setFileUtils(FileUtils fileUtils) {
+        this.fileUtils = fileUtils;
+    }
+
+    public void setInstanceCreator(JsonInstanceCreator<T> instanceCreator) {
+        this.instanceCreator = instanceCreator;
     }
 }

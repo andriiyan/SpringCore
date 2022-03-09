@@ -3,7 +3,7 @@ package com.github.andriiyan.sprongtraining.impl.service;
 import com.github.andriiyan.sprongtraining.api.dao.UserDao;
 import com.github.andriiyan.sprongtraining.api.model.User;
 import com.github.andriiyan.sprongtraining.api.service.UserService;
-import com.github.andriiyan.sprongtraining.impl.StreamUtils;
+import com.github.andriiyan.sprongtraining.impl.utils.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

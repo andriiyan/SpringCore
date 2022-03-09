@@ -20,6 +20,4 @@
         <constructor-arg ref="ticketService"/>
         <constructor-arg ref="userService"/>
     </bean>
-    <!-- more bean definitions go here -->
-
 </beans>
