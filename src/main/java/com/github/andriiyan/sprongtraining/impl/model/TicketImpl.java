@@ -75,6 +75,17 @@ class TicketImpl implements Ticket {
         this.place = place;
     }
 
+    @Override
+    public String toString() {
+        return "TicketImpl{" +
+                "id=" + id +
+                ", eventId=" + eventId +
+                ", userId=" + userId +
+                ", category=" + category +
+                ", place=" + place +
+                '}';
+    }
+
     public static class TicketJsonInstanceCreator implements JsonInstanceCreator<Ticket> {
 
         @Override

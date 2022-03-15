@@ -8,11 +8,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BaseDaoImplTest extends BaseDaoImpl<DummyTestModel> {
+
+    @Override
+    protected Logger getLogger() {
+        return LoggerFactory.getLogger("TEST");
+    }
 
     public BaseDaoImplTest() {
         super();
