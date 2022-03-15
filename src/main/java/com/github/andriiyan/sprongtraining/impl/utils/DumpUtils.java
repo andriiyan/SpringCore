@@ -8,61 +8,136 @@ import com.github.andriiyan.sprongtraining.impl.utils.file.FileUtils;
 import org.springframework.lang.NonNull;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
+/**
+ * Utility class for dumping objects into the file.
+ */
 public class DumpUtils {
 
     @NonNull
     private final FileUtils fileUtils;
     @NonNull
-    private final String rootFolder;
+    private String rootFolder;
     private final int itemCount;
 
+    /**
+     * Creates instance of the [DumpUtils] class.
+     *
+     * @param rootFolder specifies root directory where dump files will be created.
+     * @param fileUtils file utilities for write models into the files.
+     * @param itemCount count of the items that should be generated and wrote into the each dump file.
+     */
     public DumpUtils(@NonNull String rootFolder, @NonNull FileUtils fileUtils, int itemCount) {
         this.rootFolder = rootFolder;
         this.fileUtils = fileUtils;
         this.itemCount = itemCount;
     }
 
-    public void dump() {
+    /**
+     * Writes models into the files.
+     *
+     * As result there will be created 3 files under the [rootFolder] directory:
+     * - events;
+     * - tickets;
+     * - users;
+     * File's extensions will variate depending on the chose Serializer (which injects into the FileUtils). possible
+     * variants of extensions are: .json, .object.
+     */
+    public DumpResult dump() {
         try {
-            dumpUsers();
-            dumpEvents();
-            dumpTickets();
+            final Collection<User> users = dumpUsers();
+            final Collection<Event> events = dumpEvents();
+            final Collection<Ticket> tickets = dumpTickets();
+            return new DumpResult(events, users, tickets);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return new DumpResult();
     }
 
-    private void dumpEvents() throws IOException {
+    /**
+     * Writes event models into the "events" file under the rootFolder directory.
+     * @throws IOException in case any IO exception during the operation.
+     */
+    private Collection<Event> dumpEvents() throws IOException {
         Collection<Event> events = new ArrayList<>();
         for (int i = 0; i < itemCount; i++) {
             events.add(ModelsFactory.createEvent(i, "Test #" + i, new Date()));
         }
         fileUtils.writeIntoFile(rootFolder + "events" + suffix(), events);
+        return events;
     }
 
-    private void dumpTickets() throws IOException {
-        Collection<Ticket> events = new ArrayList<>();
+    /**
+     * Writes ticket models into the "tickets" file under the rootFolder directory.
+     * @throws IOException in case any IO exception during the operation.
+     */
+    private Collection<Ticket> dumpTickets() throws IOException {
+        Collection<Ticket> tickets = new ArrayList<>();
         for (int i = 0; i < itemCount; i++) {
-            events.add(ModelsFactory.createTicket(i, i, i, Ticket.Category.PREMIUM, i));
+            tickets.add(ModelsFactory.createTicket(i, i, i, Ticket.Category.PREMIUM, i));
         }
-        fileUtils.writeIntoFile(rootFolder + "tickets" + suffix(), events);
+        fileUtils.writeIntoFile(rootFolder + "tickets" + suffix(), tickets);
+        return tickets;
     }
 
-    private void dumpUsers() throws IOException {
+    /**
+     * Writes user models into the "users" file under the rootFolder directory.
+     * @throws IOException in case any IO exception during the operation.
+     */
+    private Collection<User> dumpUsers() throws IOException {
         Collection<User> events = new ArrayList<>();
         for (int i = 0; i < itemCount; i++) {
             events.add(ModelsFactory.createUser(i, "Test #" + i, "email #" + i));
         }
         fileUtils.writeIntoFile(rootFolder + "users" + suffix(), events);
+        return events;
     }
 
+    /**
+     * @return file's extension.
+     */
     @NonNull
     private String suffix() {
         return fileUtils.fileExtension();
     }
 
+    public void setRootFolder(@NonNull String rootFolder) {
+        this.rootFolder = rootFolder;
+    }
+
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public static class DumpResult {
+        final List<Event> dumpedEvents;
+        final List<User> dumpedUsers;
+        final List<Ticket> dumpedTickets;
+
+        public DumpResult() {
+            this.dumpedEvents = Collections.emptyList();
+            this.dumpedUsers = Collections.emptyList();
+            this.dumpedTickets = Collections.emptyList();
+        }
+
+        public DumpResult(Collection<Event> dumpedEvents, Collection<User> dumpedUsers, Collection<Ticket> dumpedTickets) {
+            this.dumpedEvents = new ArrayList<>(dumpedEvents);
+            this.dumpedUsers = new ArrayList<>(dumpedUsers);
+            this.dumpedTickets = new ArrayList<>(dumpedTickets);
+        }
+
+        public List<Event> getDumpedEvents() {
+            return dumpedEvents;
+        }
+
+        public List<Ticket> getDumpedTickets() {
+            return dumpedTickets;
+        }
+
+        public List<User> getDumpedUsers() {
+            return dumpedUsers;
+        }
+    }
 }

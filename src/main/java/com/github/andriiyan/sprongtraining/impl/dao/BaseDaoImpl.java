@@ -2,7 +2,6 @@ package com.github.andriiyan.sprongtraining.impl.dao;
 
 import com.github.andriiyan.sprongtraining.api.dao.BaseDao;
 import com.github.andriiyan.sprongtraining.api.model.Identifierable;
-import com.github.andriiyan.sprongtraining.impl.utils.JsonInstanceCreator;
 import com.github.andriiyan.sprongtraining.impl.utils.file.FileUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -21,8 +20,6 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
     private String initializationFilePath;
     @Nullable
     private FileUtils fileUtils;
-    @Nullable
-    private JsonInstanceCreator<T> instanceCreator;
 
     @Override
     public T save(T model) {
@@ -58,6 +55,11 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
     }
 
     @Override
+    public void clean() {
+        mStorage.clear();
+    }
+
+    @Override
     public void initialize() {
         if (initializationFilePath != null && !initializationFilePath.isBlank() && fileUtils != null) {
             initialize(new File(initializationFilePath));
@@ -67,7 +69,7 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
     protected void initialize(File file) {
         if (fileUtils == null) return;
         try {
-            final Collection<T> models = fileUtils.readFromFile(file, instanceCreator);
+            final Collection<T> models = fileUtils.readFromFile(file, getType());
             for (T model : models) {
                 save(model);
             }
@@ -84,7 +86,4 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
         this.fileUtils = fileUtils;
     }
 
-    public void setInstanceCreator(JsonInstanceCreator<T> instanceCreator) {
-        this.instanceCreator = instanceCreator;
-    }
 }

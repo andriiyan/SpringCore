@@ -50,8 +50,18 @@ public interface BaseDao<T extends Identifierable> {
     boolean delete(long id);
 
     /**
+     * Removes all records from the storage.
+     */
+    void clean();
+
+    /**
      * Initializes storage with some data if it's specified in config.
      */
     void initialize();
+
+    /**
+     * @return type of the model.
+     */
+    Class<T> getType();
 
 }

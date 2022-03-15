@@ -12,23 +12,20 @@
     <bean id="userJsonInstanceCreator" class="com.github.andriiyan.sprongtraining.impl.model.UserImpl.UserJsonInstanceCreator"/>
     <bean id="ticketJsonInstanceCreator" class="com.github.andriiyan.sprongtraining.impl.model.TicketImpl.TicketJsonInstanceCreator"/>
     <bean id="eventJsonInstanceCreator" class="com.github.andriiyan.sprongtraining.impl.model.EventImpl.EventJsonInstanceCreator"/>
-    <bean id="jsonSerializer" class="com.github.andriiyan.sprongtraining.impl.utils.file.serializer.JsonSerializer"/>
+    <bean id="jsonSerializer" class="com.github.andriiyan.sprongtraining.impl.utils.file.serializer.JsonSerializer" autowire="byType"/>
     <bean id="fileUtils" class="com.github.andriiyan.sprongtraining.impl.utils.file.FileUtils">
         <constructor-arg ref="jsonSerializer"/>
     </bean>
-    <bean id="eventDao" class="com.github.andriiyan.sprongtraining.impl.dao.EventDaoImpl" init-method="initialize">
+    <bean id="eventDao" class="com.github.andriiyan.sprongtraining.impl.dao.EventDaoImpl" init-method="initialize" lazy-init="true">
         <property name="initializationFilePath" value="${dao.event.initializationFilePath}"/>
         <property name="fileUtils" ref="fileUtils"/>
-        <property name="instanceCreator" ref="eventJsonInstanceCreator" />
     </bean>
-    <bean id="ticketDao" class="com.github.andriiyan.sprongtraining.impl.dao.TicketDaoImpl" init-method="initialize">
-        <property name="initializationFilePath" value="${dao.event.initializationFilePath}"/>
+    <bean id="ticketDao" class="com.github.andriiyan.sprongtraining.impl.dao.TicketDaoImpl" init-method="initialize" lazy-init="true">
+        <property name="initializationFilePath" value="${dao.ticket.initializationFilePath}"/>
         <property name="fileUtils" ref="fileUtils"/>
-        <property name="instanceCreator" ref="ticketJsonInstanceCreator" />
     </bean>
-    <bean id="userDao" class="com.github.andriiyan.sprongtraining.impl.dao.UserDaoImpl" init-method="initialize">
-        <property name="initializationFilePath" value="${dao.event.initializationFilePath}"/>
+    <bean id="userDao" class="com.github.andriiyan.sprongtraining.impl.dao.UserDaoImpl" init-method="initialize" lazy-init="true">
+        <property name="initializationFilePath" value="${dao.user.initializationFilePath}"/>
         <property name="fileUtils" ref="fileUtils"/>
-        <property name="instanceCreator" ref="userJsonInstanceCreator" />
     </bean>
 </beans>

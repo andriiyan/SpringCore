@@ -3,8 +3,6 @@ package com.github.andriiyan.sprongtraining.impl.model;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.model.Ticket;
 import com.github.andriiyan.sprongtraining.api.model.User;
-import com.github.andriiyan.sprongtraining.impl.model.UserImpl;
-import com.github.andriiyan.sprongtraining.impl.model.UserImpl.UserJsonInstanceCreator;
 
 import java.util.Date;
 
@@ -14,7 +12,6 @@ import java.util.Date;
 public final class ModelsFactory {
 
     private ModelsFactory() {
-        UserJsonInstanceCreator a;
     }
 
     /**

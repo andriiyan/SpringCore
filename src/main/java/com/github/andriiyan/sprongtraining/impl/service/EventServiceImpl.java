@@ -24,19 +24,15 @@ class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
-        // TODO: ask where better to do it.
-        //  of course DB query should be mush faster, but for in-memory storage I guess speed is almost same, isn't it ?
         return StreamUtils.paging(eventDao.findAll()
-                        .stream()
-                        .filter(event -> event.getTitle().contains(title)), pageNum, pageSize)
+                .stream()
+                .filter(event -> event.getTitle().contains(title)), pageNum, pageSize)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
         final Instant requestedDay = day.toInstant().truncatedTo(ChronoUnit.DAYS);
-        // TODO: ask where better to do it.
-        //  of course DB query should be mush faster, but for in-memory storage I guess speed is almost same, isn't it ?
         return StreamUtils.paging(
                 eventDao.findAll()
                         .stream()

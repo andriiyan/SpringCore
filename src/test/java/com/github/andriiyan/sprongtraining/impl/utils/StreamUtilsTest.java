@@ -1,6 +1,5 @@
-package com.github.andriiyan.sprongtraining.impl;
+package com.github.andriiyan.sprongtraining.impl.utils;
 
-import com.github.andriiyan.sprongtraining.impl.utils.StreamUtils;
 import org.junit.Assert;
 import org.junit.Test;
 

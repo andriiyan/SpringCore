@@ -5,8 +5,8 @@ import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.model.Ticket;
 import com.github.andriiyan.sprongtraining.api.model.User;
 import com.github.andriiyan.sprongtraining.api.service.TicketService;
-import com.github.andriiyan.sprongtraining.impl.utils.StreamUtils;
 import com.github.andriiyan.sprongtraining.impl.model.ModelsFactory;
+import com.github.andriiyan.sprongtraining.impl.utils.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -24,8 +24,6 @@ class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
-        // TODO: ask where better to do it.
-        //  of course DB query should be mush faster, but for in-memory storage I guess speed is almost same, isn't it ?
         return StreamUtils.paging(
                 ticketDao.findAll()
                         .stream()
@@ -37,8 +35,6 @@ class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
-        // TODO: ask where better to do it.
-        //  of course DB query should be mush faster, but for in-memory storage I guess speed is almost same, isn't it ?
         return StreamUtils.paging(
                 ticketDao.findAll()
                         .stream()

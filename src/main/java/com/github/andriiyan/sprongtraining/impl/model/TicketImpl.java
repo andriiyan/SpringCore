@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 class TicketImpl implements Ticket {
     private static final long serialVersionUID = 1L;
@@ -79,6 +80,11 @@ class TicketImpl implements Ticket {
         @Override
         public Collection<Ticket> createInstances(String source, Gson gson) {
             return Arrays.asList(gson.fromJson(source, TicketImpl[].class));
+        }
+
+        @Override
+        public Class<Ticket> getType() {
+            return Ticket.class;
         }
     }
 }
