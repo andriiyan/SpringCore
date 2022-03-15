@@ -1,6 +1,5 @@
 package com.github.andriiyan.sprongtraining.impl.utils.file.serializer;
 
-import com.github.andriiyan.sprongtraining.impl.utils.JsonInstanceCreator;
 import com.github.andriiyan.sprongtraining.impl.utils.file.Serializer;
 
 import java.io.*;
@@ -30,9 +29,9 @@ class ByteSerializer implements Serializer {
     }
 
     @Override
-    public <T> boolean serialize(Collection<T> models, FileOutputStream fileOutputStream) {
+    public <T> boolean serialize(Collection<T> models, OutputStream outputStream) {
         try {
-            final ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            final ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             for (Object item : models) {
                 objectOutputStream.writeObject(item);
             }
@@ -47,10 +46,10 @@ class ByteSerializer implements Serializer {
     }
 
     @Override
-    public <T> Collection<T> deserialize(FileInputStream fileInputStream, JsonInstanceCreator<T> instanceCreator) {
+    public <T> Collection<T> deserialize(InputStream inputStream, Class<T> type) {
         final List<T> readObjects = new ArrayList<>();
         try {
-            final ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            final ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
             Object readObject;
             while ((readObject = objectInputStream.readObject()) != null) {
                 if (readObject instanceof TerminalObject && ((TerminalObject) readObject).mTerminalUUID == terminalUUID) {

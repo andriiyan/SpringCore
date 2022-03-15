@@ -2,6 +2,9 @@ package com.github.andriiyan.sprongtraining.impl.utils;
 
 import java.util.stream.Stream;
 
+/**
+ * Utility class that simplify usage of the [Stream] class.
+ */
 public final class StreamUtils {
 
     private StreamUtils() {}

@@ -4,4 +4,9 @@ import com.github.andriiyan.sprongtraining.api.dao.EventDao;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 
 class EventDaoImpl extends BaseDaoImpl<Event> implements EventDao {
+
+    @Override
+    public Class<Event> getType() {
+        return Event.class;
+    }
 }

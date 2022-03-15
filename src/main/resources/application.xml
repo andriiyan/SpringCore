@@ -2,7 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        https://www.springframework.org/schema/beans/spring-beans.xsd">
+        https://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
     <bean id="eventDao" class="com.github.andriiyan.sprongtraining.impl.dao.EventDaoImpl"/>
     <bean id="ticketDao" class="com.github.andriiyan.sprongtraining.impl.dao.TicketDaoImpl"/>
     <bean id="userDao" class="com.github.andriiyan.sprongtraining.impl.dao.UserDaoImpl"/>

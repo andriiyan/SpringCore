@@ -56,5 +56,10 @@ class UserImpl implements User {
         public Collection<User> createInstances(String source, Gson gson) {
             return Arrays.asList(gson.fromJson(source, UserImpl[].class));
         }
+
+        @Override
+        public Class<User> getType() {
+            return User.class;
+        }
     }
 }

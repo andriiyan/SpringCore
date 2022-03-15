@@ -8,7 +8,7 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
        profile="dump">
     <context:property-placeholder location="classpath:dump.properties"/>
-    <bean id="dumpUtils" class="com.github.andriiyan.sprongtraining.impl.utils.DumpUtils">
+    <bean id="dumpUtils" class="com.github.andriiyan.sprongtraining.impl.utils.DumpUtils" lazy-init="true">
         <constructor-arg name="itemCount" value="${dump.itemCount}"/>
         <constructor-arg name="rootFolder" value="${dump.rootFolder}"/>
         <constructor-arg ref="fileUtils"/>

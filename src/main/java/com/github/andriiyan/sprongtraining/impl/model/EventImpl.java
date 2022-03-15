@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 
 class EventImpl implements Event {
     private static final long serialVersionUID = 1L;
@@ -56,6 +57,11 @@ class EventImpl implements Event {
         @Override
         public Collection<Event> createInstances(String source, Gson gson) {
             return Arrays.asList(gson.fromJson(source, EventImpl[].class));
+        }
+
+        @Override
+        public Class<Event> getType() {
+            return Event.class;
         }
     }
 }
