@@ -52,6 +52,15 @@ class EventImpl implements Event {
         this.date = date;
     }
 
+    @Override
+    public String toString() {
+        return "EventImpl{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", date=" + date +
+                '}';
+    }
+
     public static class EventJsonInstanceCreator implements JsonInstanceCreator<Event> {
 
         @Override

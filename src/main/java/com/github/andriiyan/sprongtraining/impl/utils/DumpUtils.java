@@ -5,6 +5,8 @@ import com.github.andriiyan.sprongtraining.api.model.Ticket;
 import com.github.andriiyan.sprongtraining.api.model.User;
 import com.github.andriiyan.sprongtraining.impl.model.ModelsFactory;
 import com.github.andriiyan.sprongtraining.impl.utils.file.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
 import java.io.IOException;
@@ -14,6 +16,8 @@ import java.util.*;
  * Utility class for dumping objects into the file.
  */
 public class DumpUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(DumpUtils.class);
 
     @NonNull
     private final FileUtils fileUtils;
@@ -47,11 +51,15 @@ public class DumpUtils {
     public DumpResult dump() {
         try {
             final Collection<User> users = dumpUsers();
+            logger.info("Users " + users.toString() + " were dumped into the " + rootFolder + "/users" + suffix());
             final Collection<Event> events = dumpEvents();
+            logger.info("Events " + events.toString() + " were dumped into the " + rootFolder + "/events" + suffix());
             final Collection<Ticket> tickets = dumpTickets();
+            logger.info("Tickets " + tickets.toString() + " were dumped into the " + rootFolder + "/tickets" + suffix());
             return new DumpResult(events, users, tickets);
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return new DumpResult();
     }

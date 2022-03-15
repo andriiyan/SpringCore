@@ -3,6 +3,7 @@ package com.github.andriiyan.sprongtraining.impl.dao;
 import com.github.andriiyan.sprongtraining.api.dao.BaseDao;
 import com.github.andriiyan.sprongtraining.api.model.Identifierable;
 import com.github.andriiyan.sprongtraining.impl.utils.file.FileUtils;
+import org.slf4j.Logger;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -21,42 +22,55 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
     @Nullable
     private FileUtils fileUtils;
 
+    protected abstract Logger getLogger();
+
     @Override
     public T save(T model) {
+        getLogger().info("Saving model " + model.toString());
         long id = mStorage.size() + 1;
         model.setId(id);
         mStorage.put(id, model);
+        getLogger().info("Model " + model + " has been saved");
         return model;
     }
 
     @Override
     public T update(T model) {
+        getLogger().info("Updating model " + model.toString());
         long id = model.getId();
         if (!mStorage.containsKey(id)) {
             return null;
         }
         mStorage.put(id, model);
+        getLogger().info("Model " + model + " has been updated");
         return model;
     }
 
     @Override
     public T findById(long id) {
-        return mStorage.get(id);
+        final T model = mStorage.get(id);
+        getLogger().info("findById invoked with an " + id + " and returned " + model);
+        return model;
     }
 
     @Override
     public Collection<T> findAll() {
-        return mStorage.values();
+        final Collection<T> models = mStorage.values();
+        getLogger().info("findAll invoked and returned " + models);
+        return models;
     }
 
     @Override
     public boolean delete(long id) {
-        return mStorage.remove(id) != null;
+        final boolean result = mStorage.remove(id) != null;
+        getLogger().info("delete invoked with " + id + " and return " + result);
+        return result;
     }
 
     @Override
     public void clean() {
         mStorage.clear();
+        getLogger().info("clean invoked");
     }
 
     @Override
@@ -68,13 +82,16 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
 
     protected void initialize(File file) {
         if (fileUtils == null) return;
+        getLogger().info("initialization invoked with path: " + initializationFilePath);
         try {
             final Collection<T> models = fileUtils.readFromFile(file, getType());
             for (T model : models) {
                 save(model);
             }
+            getLogger().info("storage was initialized with " + models.size() + " items");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+            getLogger().error(e.toString());
         }
     }
 

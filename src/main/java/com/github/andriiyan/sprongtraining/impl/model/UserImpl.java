@@ -50,6 +50,15 @@ class UserImpl implements User {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "UserImpl{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
     public static class UserJsonInstanceCreator implements JsonInstanceCreator<User> {
 
         @Override
