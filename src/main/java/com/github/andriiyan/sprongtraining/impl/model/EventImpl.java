@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
+// TODO: 3/20/2022 - EventEntity is a better name for this class
 class EventImpl implements Event {
     private static final long serialVersionUID = 1L;
 

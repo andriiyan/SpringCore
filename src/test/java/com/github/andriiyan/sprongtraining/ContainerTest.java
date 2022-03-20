@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+// TODO: 3/20/2022 - All integration tests work with same application context setup. Combine them in one test, setup context in @Before section
 public class ContainerTest {
 
     public <T> void verifyNotContainsInConfig(ApplicationContext context, Class<T> type) {

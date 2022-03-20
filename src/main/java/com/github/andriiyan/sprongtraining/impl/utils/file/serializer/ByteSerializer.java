@@ -23,6 +23,7 @@ class ByteSerializer implements Serializer {
             this.mTerminalUUID = mTerminalUUID;
         }
 
+        // TODO: 3/20/2022 - looks like this method is never used
         public void setmTerminalUUID(long mTerminalUUID) {
             this.mTerminalUUID = mTerminalUUID;
         }

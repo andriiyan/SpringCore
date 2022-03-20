@@ -39,10 +39,13 @@ public class FileUtils {
             }
             if (!file.createNewFile()) return false;
         }
+        // TODO: 3/20/2022 - for readability it's better to follow single return rule where possible
+        // TODO: 3/20/2022 - for readability it's better to join if-statements with same outcome
         if (!file.setWritable(true)) return false;
         if (!file.setReadable(true)) return false;
         final FileOutputStream fileOutputStream = new FileOutputStream(file, false);
         final boolean result = serializer.serialize(items, fileOutputStream);
+        // TODO: 3/20/2022 - when working with IO you should protect yourself from exceptions and always close IO-streams using try-catch-finalize
         fileOutputStream.flush();
         fileOutputStream.close();
         return result;

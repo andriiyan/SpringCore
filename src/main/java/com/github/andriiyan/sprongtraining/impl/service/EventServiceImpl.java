@@ -30,6 +30,7 @@ class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
+        // TODO: 3/20/2022 - If you change dao to read from DB, you will have to change two classes. Move this logic to eventDao, so you will have one place to change
         final List<Event> events = StreamUtils.paging(eventDao.findAll()
                 .stream()
                 .filter(event -> event.getTitle().contains(title)), pageNum, pageSize)
@@ -42,6 +43,7 @@ class EventServiceImpl implements EventService {
     @Override
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
         final Instant requestedDay = day.toInstant().truncatedTo(ChronoUnit.DAYS);
+        // TODO: 3/20/2022 - same here and in all similar places
         final List<Event> events = StreamUtils.paging(
                 eventDao.findAll()
                         .stream()
