@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
+// TODO: 3/20/2022 - Better idea is to test exact dao classes instead of abstract ancestor
 @RunWith(MockitoJUnitRunner.class)
 public class BaseDaoImplTest extends BaseDaoImpl<DummyTestModel> {
 

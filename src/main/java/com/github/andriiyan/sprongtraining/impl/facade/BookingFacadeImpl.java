@@ -30,6 +30,7 @@ class BookingFacadeImpl implements BookingFacade {
     @Override
     public Event getEventById(long eventId) {
         final Event event = eventService.getEventById(eventId);
+        // TODO: 3/20/2022 - better use DEBUG or TRACE log-level for arguments/result logging
         logger.info("getEventById invoked with " + eventId + " returning " + event);
         return event;
     }

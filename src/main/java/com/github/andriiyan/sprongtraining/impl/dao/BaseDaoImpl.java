@@ -13,8 +13,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: 3/20/2022 - any reason in using default access modifier here and in other similar cases?
 abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
 
+    // TODO: 3/20/2022 - See Main task: 4. Storage should be implemented as a separate spring bean. Implement the ability to initialize storage with some prepared data from the file during the application start (use spring bean post-processing features). Path to the concrete file should be set using property placeholder and external property file.
     @NonNull
     private final Map<Long, T> mStorage = new HashMap<>();
     @Nullable
@@ -26,7 +28,9 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
 
     @Override
     public T save(T model) {
-        getLogger().info("Saving model " + model.toString());
+        // TODO: 3/20/2022 - avoid string concatenation in logging, use parametrized templates instead
+        getLogger().info("Saving model {}", model);
+        // TODO: 3/20/2022 - What if you have 3 item in storage, and remove one with id 1? You next id will be 3, so you'll end up with two elements with same id
         long id = mStorage.size() + 1;
         model.setId(id);
         mStorage.put(id, model);
@@ -38,7 +42,9 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
     public T update(T model) {
         getLogger().info("Updating model " + model.toString());
         long id = model.getId();
+        // TODO: 3/20/2022 - even if there's no update, client will think everything went fine. It would be better to throw some exception here
         if (!mStorage.containsKey(id)) {
+            // TODO: 3/20/2022 - for readability it's better to follow single return rule
             return null;
         }
         mStorage.put(id, model);
