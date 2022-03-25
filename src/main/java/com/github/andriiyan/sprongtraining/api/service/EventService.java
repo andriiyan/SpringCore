@@ -1,6 +1,7 @@
 package com.github.andriiyan.sprongtraining.api.service;
 
 import com.github.andriiyan.sprongtraining.api.model.Event;
+import com.github.andriiyan.sprongtraining.impl.dao.exception.ModelNotFoundException;
 
 import java.util.Date;
 import java.util.List;
@@ -44,7 +45,7 @@ public interface EventService {
      * @param event Event data for update. Should have id set.
      * @return Updated Event object.
      */
-    Event updateEvent(Event event);
+    Event updateEvent(Event event) throws ModelNotFoundException;
 
     /**
      * Deletes event by its id.

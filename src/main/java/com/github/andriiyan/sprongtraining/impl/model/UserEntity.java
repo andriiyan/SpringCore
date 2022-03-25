@@ -7,14 +7,14 @@ import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.Collection;
 
-class UserImpl implements User {
+public class UserEntity implements User {
     private static final long serialVersionUID = 1L;
 
     private long id;
     private String name;
     private String email;
 
-    public UserImpl(long id, String name, String email) {
+    public UserEntity(long id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -63,7 +63,7 @@ class UserImpl implements User {
 
         @Override
         public Collection<User> createInstances(String source, Gson gson) {
-            return Arrays.asList(gson.fromJson(source, UserImpl[].class));
+            return Arrays.asList(gson.fromJson(source, UserEntity[].class));
         }
 
         @Override

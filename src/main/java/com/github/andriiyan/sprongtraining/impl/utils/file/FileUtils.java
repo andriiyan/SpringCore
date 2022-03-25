@@ -34,20 +34,24 @@ public class FileUtils {
         // create new file and set it's permission to the writable
         if (!file.exists()) {
             final File folder = file.getParentFile();
-            if (!folder.exists() && !folder.mkdirs()) {
+            if (!folder.exists() && !folder.mkdirs() && !file.createNewFile()) {
                 return false;
             }
-            if (!file.createNewFile()) return false;
         }
-        // TODO: 3/20/2022 - for readability it's better to follow single return rule where possible
-        // TODO: 3/20/2022 - for readability it's better to join if-statements with same outcome
-        if (!file.setWritable(true)) return false;
-        if (!file.setReadable(true)) return false;
-        final FileOutputStream fileOutputStream = new FileOutputStream(file, false);
-        final boolean result = serializer.serialize(items, fileOutputStream);
-        // TODO: 3/20/2022 - when working with IO you should protect yourself from exceptions and always close IO-streams using try-catch-finalize
-        fileOutputStream.flush();
-        fileOutputStream.close();
+        if (!file.setWritable(true) && !file.setReadable(true)) {
+            return false;
+        }
+        FileOutputStream fileOutputStream = null;
+        boolean result = false;
+        try {
+            fileOutputStream = new FileOutputStream(file, false);
+            result = serializer.serialize(items, fileOutputStream);
+        } finally {
+            if (fileOutputStream != null) {
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            }
+        }
         return result;
     }
 

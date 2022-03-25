@@ -1,4 +1,4 @@
-package com.github.andriiyan.sprongtraining.api.dao;
+package com.github.andriiyan.sprongtraining.api.storage;
 
 import com.github.andriiyan.sprongtraining.api.model.Identifierable;
 import com.github.andriiyan.sprongtraining.impl.dao.exception.ModelNotFoundException;
@@ -7,7 +7,10 @@ import org.springframework.lang.Nullable;
 
 import java.util.Collection;
 
-public interface BaseDao<T extends Identifierable> {
+/**
+ * Implements storing logic of the models.
+ */
+public interface Storage<T extends Identifierable> {
 
     /**
      * Saves model into the storage.

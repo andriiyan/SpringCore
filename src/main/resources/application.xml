@@ -4,9 +4,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd"
        default-lazy-init="true">
-    <bean id="eventDao" class="com.github.andriiyan.sprongtraining.impl.dao.EventDaoImpl"/>
-    <bean id="ticketDao" class="com.github.andriiyan.sprongtraining.impl.dao.TicketDaoImpl"/>
-    <bean id="userDao" class="com.github.andriiyan.sprongtraining.impl.dao.UserDaoImpl"/>
+    <bean id="eventStorage" class="com.github.andriiyan.sprongtraining.impl.storage.StorageImpl"/>
+    <bean id="ticketStorage" class="com.github.andriiyan.sprongtraining.impl.storage.StorageImpl"/>
+    <bean id="userStorage" class="com.github.andriiyan.sprongtraining.impl.storage.StorageImpl"/>
+    <bean id="eventDao" class="com.github.andriiyan.sprongtraining.impl.dao.EventDaoImpl">
+        <constructor-arg ref="eventStorage"/>
+    </bean>
+    <bean id="ticketDao" class="com.github.andriiyan.sprongtraining.impl.dao.TicketDaoImpl">
+        <constructor-arg ref="ticketStorage"/>
+    </bean>
+    <bean id="userDao" class="com.github.andriiyan.sprongtraining.impl.dao.UserDaoImpl">
+        <constructor-arg ref="userStorage"/>
+    </bean>
     <bean id="eventService" class="com.github.andriiyan.sprongtraining.impl.service.EventServiceImpl">
         <property name="eventDao" ref="eventDao"/> <!-- task requirement: dao should be injected via setters -->
     </bean>

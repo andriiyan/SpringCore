@@ -3,7 +3,9 @@ package com.github.andriiyan.sprongtraining.impl;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.model.Ticket;
 import com.github.andriiyan.sprongtraining.api.model.User;
-import com.github.andriiyan.sprongtraining.impl.model.ModelsFactory;
+import com.github.andriiyan.sprongtraining.impl.model.EventEntity;
+import com.github.andriiyan.sprongtraining.impl.model.TicketEntity;
+import com.github.andriiyan.sprongtraining.impl.model.UserEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,7 +27,7 @@ public final class TestModelsFactory {
 
         @Override
         public Event create(int count) {
-            return ModelsFactory.createEvent(count(count), title(count), date(count));
+            return new EventEntity(count(count), title(count), date(count));
         }
     }
 
@@ -46,7 +48,7 @@ public final class TestModelsFactory {
 
         @Override
         public Ticket create(int count) {
-            return ModelsFactory.createTicket(id(count), eventId(count), userId(count),category(count), place(count));
+            return new TicketEntity(id(count), eventId(count), userId(count),category(count), place(count));
         }
     }
 
@@ -60,7 +62,7 @@ public final class TestModelsFactory {
 
         @Override
         public User create(int count) {
-            return ModelsFactory.createUser(id(count), name(count), email(count));
+            return new UserEntity(id(count), name(count), email(count));
         }
     }
 
@@ -76,7 +78,7 @@ public final class TestModelsFactory {
         return generate(count, eventCountInstanceFactory);
     }
 
-    public static List<Ticket> generateTickers(int count, final CountInstanceFactory<Ticket> ticketCountInstanceFactory) {
+    public static List<Ticket> generateTickets(int count, final CountInstanceFactory<Ticket> ticketCountInstanceFactory) {
         return generate(count, ticketCountInstanceFactory);
     }
 
@@ -89,7 +91,7 @@ public final class TestModelsFactory {
     }
 
     public static List<Ticket> generateTickets(int count) {
-        return generateTickers(count, new DefaultTicketCountInstanceFactory());
+        return generateTickets(count, new DefaultTicketCountInstanceFactory());
     }
 
     public static List<User> generateUsers(int count) {

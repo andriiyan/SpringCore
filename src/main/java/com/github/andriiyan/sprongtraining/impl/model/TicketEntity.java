@@ -6,9 +6,8 @@ import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 
-class TicketImpl implements Ticket {
+public class TicketEntity implements Ticket {
     private static final long serialVersionUID = 1L;
 
     private long id;
@@ -17,7 +16,7 @@ class TicketImpl implements Ticket {
     private Category category;
     private int place;
 
-    public TicketImpl(long id, long eventId, long userId, Category category, int place) {
+    public TicketEntity(long id, long eventId, long userId, Category category, int place) {
         this.id = id;
         this.eventId = eventId;
         this.userId = userId;
@@ -90,7 +89,7 @@ class TicketImpl implements Ticket {
 
         @Override
         public Collection<Ticket> createInstances(String source, Gson gson) {
-            return Arrays.asList(gson.fromJson(source, TicketImpl[].class));
+            return Arrays.asList(gson.fromJson(source, TicketEntity[].class));
         }
 
         @Override

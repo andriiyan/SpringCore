@@ -3,7 +3,9 @@ package com.github.andriiyan.sprongtraining.impl.utils;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.model.Ticket;
 import com.github.andriiyan.sprongtraining.api.model.User;
-import com.github.andriiyan.sprongtraining.impl.model.ModelsFactory;
+import com.github.andriiyan.sprongtraining.impl.model.EventEntity;
+import com.github.andriiyan.sprongtraining.impl.model.TicketEntity;
+import com.github.andriiyan.sprongtraining.impl.model.UserEntity;
 import com.github.andriiyan.sprongtraining.impl.utils.file.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,7 @@ import java.util.*;
 /**
  * Utility class for dumping objects into the file.
  */
-public class DumpUtils {
+class DumpUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(DumpUtils.class);
 
@@ -48,14 +50,14 @@ public class DumpUtils {
      * File's extensions will variate depending on the chose Serializer (which injects into the FileUtils). possible
      * variants of extensions are: .json, .object.
      */
-    public DumpResult dump() {
+    DumpResult dump() {
         try {
             final Collection<User> users = dumpUsers();
-            logger.info("Users " + users.toString() + " were dumped into the " + rootFolder + "/users" + suffix());
+            logger.debug("Users " + users.toString() + " were dumped into the " + rootFolder + "/users" + suffix());
             final Collection<Event> events = dumpEvents();
-            logger.info("Events " + events.toString() + " were dumped into the " + rootFolder + "/events" + suffix());
+            logger.debug("Events " + events.toString() + " were dumped into the " + rootFolder + "/events" + suffix());
             final Collection<Ticket> tickets = dumpTickets();
-            logger.info("Tickets " + tickets.toString() + " were dumped into the " + rootFolder + "/tickets" + suffix());
+            logger.debug("Tickets " + tickets.toString() + " were dumped into the " + rootFolder + "/tickets" + suffix());
             return new DumpResult(events, users, tickets);
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,7 +73,7 @@ public class DumpUtils {
     private Collection<Event> dumpEvents() throws IOException {
         Collection<Event> events = new ArrayList<>();
         for (int i = 0; i < itemCount; i++) {
-            events.add(ModelsFactory.createEvent(i, "Test #" + i, new Date()));
+            events.add(new EventEntity(i, "Test #" + i, new Date()));
         }
         fileUtils.writeIntoFile(rootFolder + "events" + suffix(), events);
         return events;
@@ -84,7 +86,7 @@ public class DumpUtils {
     private Collection<Ticket> dumpTickets() throws IOException {
         Collection<Ticket> tickets = new ArrayList<>();
         for (int i = 0; i < itemCount; i++) {
-            tickets.add(ModelsFactory.createTicket(i, i, i, Ticket.Category.PREMIUM, i));
+            tickets.add(new TicketEntity(i, i, i, Ticket.Category.PREMIUM, i));
         }
         fileUtils.writeIntoFile(rootFolder + "tickets" + suffix(), tickets);
         return tickets;
@@ -97,7 +99,7 @@ public class DumpUtils {
     private Collection<User> dumpUsers() throws IOException {
         Collection<User> events = new ArrayList<>();
         for (int i = 0; i < itemCount; i++) {
-            events.add(ModelsFactory.createUser(i, "Test #" + i, "email #" + i));
+            events.add(new UserEntity(i, "Test #" + i, "email #" + i));
         }
         fileUtils.writeIntoFile(rootFolder + "users" + suffix(), events);
         return events;
@@ -113,10 +115,6 @@ public class DumpUtils {
 
     public void setRootFolder(@NonNull String rootFolder) {
         this.rootFolder = rootFolder;
-    }
-
-    public int getItemCount() {
-        return itemCount;
     }
 
     public static class DumpResult {

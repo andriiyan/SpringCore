@@ -7,17 +7,15 @@ import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Objects;
 
-// TODO: 3/20/2022 - EventEntity is a better name for this class
-class EventImpl implements Event {
+public class EventEntity implements Event {
     private static final long serialVersionUID = 1L;
 
     private long id;
     private String title;
     private Date date;
 
-    public EventImpl(long id, String title, Date date) {
+    public EventEntity(long id, String title, Date date) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -66,7 +64,7 @@ class EventImpl implements Event {
 
         @Override
         public Collection<Event> createInstances(String source, Gson gson) {
-            return Arrays.asList(gson.fromJson(source, EventImpl[].class));
+            return Arrays.asList(gson.fromJson(source, EventEntity[].class));
         }
 
         @Override

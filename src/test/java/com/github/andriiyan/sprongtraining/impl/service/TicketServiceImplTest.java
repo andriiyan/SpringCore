@@ -6,9 +6,9 @@ import com.github.andriiyan.sprongtraining.api.model.Ticket;
 import com.github.andriiyan.sprongtraining.api.model.User;
 import com.github.andriiyan.sprongtraining.impl.TestModelsFactory;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -21,13 +21,8 @@ public class TicketServiceImplTest {
     @Mock
     private TicketDao ticketDao;
 
+    @InjectMocks
     private TicketServiceImpl ticketService;
-
-    @Before
-    public void init() {
-        ticketService = new TicketServiceImpl();
-        ticketService.setTicketDao(ticketDao);
-    }
 
     @Test
     public void bookTicket_shouldInvokeDao() {
@@ -50,19 +45,13 @@ public class TicketServiceImplTest {
         final int pageNum = 2;
 
         final User user = TestModelsFactory.generateSingleUser();
-        final List<Ticket> allTickets = TestModelsFactory.generateTickers(pageSize * (pageNum + 1), new TestModelsFactory.DefaultTicketCountInstanceFactory() {
-            @Override
-            protected long userId(int count) {
-                return user.getId();
-            }
-        });
-        Mockito.when(ticketDao.findAll()).thenReturn(allTickets);
-
+        final List<Ticket> allTickets = TestModelsFactory.generateTickets(pageSize * (pageNum + 1));
+        Mockito.when(ticketDao.getBookedTickets(user, pageSize, pageNum)).thenReturn(allTickets);
 
         final List<Ticket> returnedTickets = ticketService.getBookedTickets(user, pageSize, pageNum);
 
-        Assert.assertEquals(allTickets.subList(pageNum * pageSize, (pageNum + 1) * pageSize), returnedTickets);
-        Mockito.verify(ticketDao).findAll();
+        Assert.assertEquals(allTickets, returnedTickets);
+        Mockito.verify(ticketDao).getBookedTickets(user, pageSize, pageNum);
     }
 
     @Test
@@ -71,19 +60,13 @@ public class TicketServiceImplTest {
         final int pageNum = 2;
 
         final Event event = TestModelsFactory.generateSingleEvent();
-        final List<Ticket> allTickets = TestModelsFactory.generateTickers(pageSize * (pageNum + 1), new TestModelsFactory.DefaultTicketCountInstanceFactory() {
-            @Override
-            protected long eventId(int count) {
-                return event.getId();
-            }
-        });
-        Mockito.when(ticketDao.findAll()).thenReturn(allTickets);
-
+        final List<Ticket> allTickets = TestModelsFactory.generateTickets(pageSize * (pageNum + 1));
+        Mockito.when(ticketDao.getBookedTickets(event, pageSize, pageNum)).thenReturn(allTickets);
 
         final List<Ticket> returnedTickets = ticketService.getBookedTickets(event, pageSize, pageNum);
 
-        Assert.assertEquals(allTickets.subList(pageNum * pageSize, (pageNum + 1) * pageSize), returnedTickets);
-        Mockito.verify(ticketDao).findAll();
+        Assert.assertEquals(allTickets, returnedTickets);
+        Mockito.verify(ticketDao).getBookedTickets(event, pageSize, pageNum);
     }
 
 
