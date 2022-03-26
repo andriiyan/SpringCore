@@ -4,16 +4,13 @@ import com.github.andriiyan.sprongtraining.api.dao.BaseDao;
 import com.github.andriiyan.sprongtraining.api.model.Identifierable;
 import com.github.andriiyan.sprongtraining.api.storage.Storage;
 import com.github.andriiyan.sprongtraining.impl.dao.exception.ModelNotFoundException;
-import com.github.andriiyan.sprongtraining.impl.utils.file.FileUtils;
+import com.github.andriiyan.sprongtraining.impl.utils.StreamUtils;
 import org.slf4j.Logger;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 // TODO: 3/20/2022 - any reason in using default access modifier here and in other similar cases?
 abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
@@ -44,7 +41,7 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
     @Override
     public T findById(long id) {
         final T model = storage.findById(id);
-        getLogger().debug("findById invoked with an " + id + " and returned " + model);
+        getLogger().debug("findById invoked with a {} and returned {}", id, model);
         return model;
     }
 
@@ -66,6 +63,14 @@ abstract class BaseDaoImpl<T extends Identifierable> implements BaseDao<T> {
     public void clean() {
         storage.clean();
         getLogger().debug("clean invoked");
+    }
+
+    protected List<T> findPage(int pageNum, int pageSize, Predicate<T> predicate) {
+        return StreamUtils.paging(
+                findAll().stream().filter(predicate),
+                pageNum,
+                pageSize
+        ).collect(Collectors.toList());
     }
 
 }

@@ -25,44 +25,42 @@ class EventServiceImpl implements EventService {
     @Override
     public Event getEventById(long eventId) {
         final Event event = eventDao.findById(eventId);
-        logger.debug("getEventById was invoked with userId=" + eventId + " and returning " + event);
+        logger.debug("getEventById was invoked with userId={} and returning {}", eventId, event);
         return event;
     }
 
     @Override
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
         final List<Event> events = eventDao.getEventsByTitle(title, pageSize, pageNum);
-        logger.debug("getEventsByTitle was invoked with title=" + title + ", pageSize=" + pageSize + ", pageNum=" + pageNum
-                + " and returning " + events.toString());
+        logger.debug("getEventsByTitle was invoked with title={}, pageSize={}, pageNum={} and returning {}", title, pageSize, pageNum, events);
         return events;
     }
 
     @Override
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
         final List<Event> events = eventDao.getEventsForDay(day, pageSize, pageNum);
-        logger.debug("getEventsForDay was invoked with day=" + day + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returning " + events.toString());
+        logger.debug("getEventsForDay was invoked with day={}, pageSize={}, pageNum={} and returning {}", day, pageSize, pageNum, events);
         return events;
     }
 
     @Override
     public Event createEvent(Event event) {
         final Event mEvent = eventDao.save(event);
-        logger.debug("createEvent was invoked with event=" + event + " and returning " + mEvent);
+        logger.debug("createEvent was invoked with event={} and returning {}", event, mEvent);
         return mEvent;
     }
 
     @Override
     public Event updateEvent(Event event) throws ModelNotFoundException {
         final Event mEvent = eventDao.update(event);
-        logger.debug("updateEvent was invoked with event=" + event  + " and returning " + mEvent);
+        logger.debug("updateEvent was invoked with event={} and returning {}", event, mEvent);
         return mEvent;
     }
 
     @Override
     public boolean deleteEvent(long eventId) {
         final boolean result = eventDao.delete(eventId);
-        logger.debug("deleteEvent was invoked with eventId=" + eventId + " and returning " + result);
+        logger.debug("deleteEvent was invoked with eventId={} and returning {}", eventId, result);
         return result;
     }
 

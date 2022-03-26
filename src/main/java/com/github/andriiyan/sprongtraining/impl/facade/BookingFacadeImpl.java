@@ -31,118 +31,112 @@ class BookingFacadeImpl implements BookingFacade {
     @Override
     public Event getEventById(long eventId) {
         final Event event = eventService.getEventById(eventId);
-        logger.debug("getEventById invoked with " + eventId + " returning " + event);
+        logger.debug("getEventById invoked with {} returning {}", eventId, event);
         return event;
     }
 
     @Override
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
         final List<Event> events = eventService.getEventsByTitle(title, pageSize, pageNum);
-        logger.debug("getEventsByTitle invoked with title=" + title + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returned " + events.toString());
+        logger.debug("getEventsByTitle invoked with title={}, pageSize={}, pageNum={} and returned {}", title, pageSize, pageNum, events);
         return events;
     }
 
     @Override
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
         final List<Event> events = eventService.getEventsForDay(day, pageSize, pageNum);
-        logger.debug("getEventsByTitle invoked with day=" + day + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returned " + events.toString());
+        logger.debug("getEventsByTitle invoked with day={}, pageSize={}, pageNum={} and returned {}", day, pageSize, pageNum, events);
         return events;
     }
 
     @Override
     public Event createEvent(Event event) {
         final Event mEvent = eventService.createEvent(event);
-        logger.debug("createEvent was invoked with " + event.toString() + " and returning " + mEvent);
+        logger.debug("createEvent was invoked with {} and returning {}", event, mEvent);
         return mEvent;
     }
 
     @Override
     public Event updateEvent(Event event) throws ModelNotFoundException {
         final Event mEvent = eventService.updateEvent(event);
-        logger.debug("updateEvent was invoked with " + event.toString() + " and returning " + mEvent);
+        logger.debug("updateEvent was invoked with {} and returning {}", event, mEvent);
         return mEvent;
     }
 
     @Override
     public boolean deleteEvent(long eventId) {
         final boolean result = eventService.deleteEvent(eventId);
-        logger.debug("deleteEvent was invoked with " + eventId + " and returning " + result);
+        logger.debug("deleteEvent was invoked with {} and returning {}", eventId, result);
         return result;
     }
 
     @Override
     public User getUserById(long userId) {
         final User user = userService.getUserById(userId);
-        logger.debug("getUserById was invoked with " + user + " and returning " + user);
+        logger.debug("getUserById was invoked with {} and returning {}", userId, user);
         return user;
     }
 
     @Override
     public User getUserByEmail(String email) {
         final User user = userService.getUserByEmail(email);
-        logger.debug("getUserByEmail was invoked with " + email + " and returning " + user);
+        logger.debug("getUserByEmail was invoked with {} and returning {}", email, user);
         return user;
     }
 
     @Override
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
         final List<User> users = userService.getUsersByName(name, pageSize, pageNum);
-        logger.debug("getUsersByName was invoked with name=" + name + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returning " + users.toString());
+        logger.debug("getUsersByName was invoked with name={}, pageSize={}, pageNum={} and returning {}", name, pageSize, pageNum, users);
         return users;
     }
 
     @Override
     public User createUser(User user) {
         final User mUser = userService.createUser(user);
-        logger.debug("createUser was invoked with " + user + " and returning " + mUser);
+        logger.debug("createUser was invoked with {} and returning {}", user, mUser);
         return mUser;
     }
 
     @Override
     public User updateUser(User user) throws ModelNotFoundException {
         final User mUser = userService.updateUser(user);
-        logger.debug("updateUser was invoked with " + user + " and returning " + mUser);
+        logger.debug("updateUser was invoked with {} and returning {}", user, mUser);
         return mUser;
     }
 
     @Override
     public boolean deleteUser(long userId) {
         final boolean result = userService.deleteUser(userId);
-        logger.debug("deleteUser was invoked with " + userId + " and returning " + result);
+        logger.debug("deleteUser was invoked with {} and returning {}", userId, result);
         return result;
     }
 
     @Override
     public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
         final Ticket ticket = ticketService.bookTicket(userId, eventId, place, category);
-        logger.debug("bookTicket was invoked with userId=" + userId + ", eventId=" + eventId + ", place=" + place +
-                ", category=" + category + " and returning " + ticket);
+        logger.debug("bookTicket was invoked with userId={}, eventId={}, place={}, category={} and returning {}", userId, eventId, place, category, ticket);
         return ticket;
     }
 
     @Override
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
         final List<Ticket> tickets = ticketService.getBookedTickets(user, pageSize, pageNum);
-        logger.debug("getBookedTickets was invoked with user=" + user + ", pageSize=" + pageSize + ", pageNum=" + pageNum
-                + " and returning " + tickets.toString());
+        logger.debug("getBookedTickets was invoked with user={}, pageSize={}, pageNum={} and returning {}", user, pageSize, pageNum, tickets);
         return tickets;
     }
 
     @Override
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         final List<Ticket> tickets = ticketService.getBookedTickets(event, pageSize, pageNum);
-        logger.debug("getBookedTickets was invoked with event=" + event + ", pageSize=" + pageSize + ", pageNum=" +
-                pageNum + " and returning " + tickets.toString());
+        logger.debug("getBookedTickets was invoked with event={}, pageSize={}, pageNum={} and returning {}", event, pageSize, pageNum, tickets);
         return tickets;
     }
 
     @Override
     public boolean cancelTicket(long ticketId) {
         final boolean result = ticketService.cancelTicket(ticketId);
-        logger.debug("cancelTicket was invoked with " + ticketId + " and returning " + result);
+        logger.debug("cancelTicket was invoked with {} and returning {}", ticketId, result);
         return result;
     }
 }

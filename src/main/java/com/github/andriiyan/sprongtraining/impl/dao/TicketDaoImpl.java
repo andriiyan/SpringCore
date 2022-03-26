@@ -27,29 +27,15 @@ class TicketDaoImpl extends BaseDaoImpl<Ticket> implements TicketDao {
 
     @Override
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
-        final List<Ticket> tickets = StreamUtils.paging(
-                findAll()
-                        .stream()
-                        .filter(ticket -> ticket.getUserId() == user.getId()),
-                pageNum,
-                pageSize
-        ).collect(Collectors.toList());
-        logger.debug("getBookedTickets was invoked user=" + user + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returning " + tickets.toString());
+        final List<Ticket> tickets = findPage(pageNum, pageSize, ticket -> ticket.getUserId() == user.getId());
+        logger.debug("getBookedTickets was invoked user={}, pageSize={}, pageNum={} and returning {}", user, pageSize, pageNum, tickets);
         return tickets;
     }
 
     @Override
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
-        final List<Ticket> tickets = StreamUtils.paging(
-                findAll()
-                        .stream()
-                        .filter(ticket -> ticket.getEventId() == event.getId()),
-                pageNum,
-                pageSize
-        ).collect(Collectors.toList());
-        logger.debug("getBookedTickets was invoked with event=" + event + ", pageSize=" + pageSize +
-                ", pageNum=" + pageNum + " and returning " + tickets);
+        final List<Ticket> tickets = findPage(pageNum, pageSize, ticket -> ticket.getEventId() == event.getId());
+        logger.debug("getBookedTickets was invoked with event={}, pageSize={}, pageNum={} and returning {}", event, pageSize, pageNum, tickets);
         return tickets;
     }
 }

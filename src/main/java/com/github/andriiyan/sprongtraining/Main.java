@@ -20,13 +20,13 @@ public class Main {
                 "application-json.xml",
                 "application-dump.xml"
                 );
-        logger.debug("Container has been configured");
+        logger.info("Container has been configured");
         final EventService eventService = context.getBean(EventService.class);
         final TicketService ticketService = context.getBean(TicketService.class);
         final UserService userService = context.getBean(UserService.class);
         final BookingFacade bookingFacade = context.getBean(BookingFacade.class);
 
-        logger.debug("App finishes it work");
+        logger.info("App finishes it work");
     }
 
 }

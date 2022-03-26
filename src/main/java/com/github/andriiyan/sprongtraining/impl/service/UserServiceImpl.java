@@ -22,43 +22,42 @@ class UserServiceImpl implements UserService {
     @Override
     public User getUserById(long userId) {
         final User user = userDao.findById(userId);
-        logger.debug("getUserById was invoked with userId=" + userId + " and returning " + user);
+        logger.debug("getUserById was invoked with userId={} and returning {}", userId, user);
         return user;
     }
 
     @Override
     public User getUserByEmail(String email) {
         final User mUser = userDao.getUserByEmail(email);
-        logger.debug("getUserByEmail was invoked with email=" + email + " and returning " + mUser);
+        logger.debug("getUserByEmail was invoked with email={} and returning {}", email, mUser);
         return mUser;
     }
 
     @Override
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
         final List<User> users = userDao.getUsersByName(name, pageSize, pageNum);
-        logger.debug("getUsersByName was invoked with name=" + name + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returning " + users.toString());
+        logger.debug("getUsersByName was invoked with name={}, pageSize={}, pageNum={} and returning {}", name, pageSize, pageNum, users);
         return users;
     }
 
     @Override
     public User createUser(User user) {
         final User mUser = userDao.save(user);
-        logger.debug("createUser was invoked with user=" + user + " and returning " + mUser);
+        logger.debug("createUser was invoked with user={} and returning {}", user, mUser);
         return mUser;
     }
 
     @Override
     public User updateUser(User user) throws ModelNotFoundException {
         final User mUser = userDao.update(user);
-        logger.debug("updateUser was invoked with user=" + user  + " and returning " + mUser);
+        logger.debug("updateUser was invoked with user={} and returning {}", user, mUser);
         return mUser;
     }
 
     @Override
     public boolean deleteUser(long userId) {
         final boolean result = userDao.delete(userId);
-        logger.debug("deleteUser was invoked with userId=" + userId + " and returning " + result);
+        logger.debug("deleteUser was invoked with userId={} and returning {}", userId, result);
         return result;
     }
 

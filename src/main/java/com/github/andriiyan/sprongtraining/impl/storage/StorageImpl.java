@@ -86,14 +86,14 @@ class StorageImpl<T extends Identifierable> implements Storage<T> {
 
     private void initialize(File file) {
         if (fileUtils == null) return;
-        logger.debug("initialization invoked with path: " + initializationFilePath);
+        logger.debug("initialization invoked with path: {}", initializationFilePath);
         try {
             final Collection<T> models = fileUtils.readFromFile(file, (Class<T>) Class.forName(templateClassName));
             for (T model : models) {
                 save(model);
             }
-            logger.debug("storage was initialized with " + models.size() + " items");
-        } catch (IOException | ClassNotFoundException e) {
+            logger.debug("storage was initialized with {} items: {}", models.size(), models);
+        } catch (ClassCastException | IOException | ClassNotFoundException e) {
             e.printStackTrace();
             logger.error(e.toString());
         }

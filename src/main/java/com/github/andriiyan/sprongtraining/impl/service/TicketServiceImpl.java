@@ -22,31 +22,28 @@ class TicketServiceImpl implements TicketService {
     @Override
     public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
         final Ticket ticket = ticketDao.save(new TicketEntity(0, eventId, userId, category, place));
-        logger.debug("bookTicket was invoked with userId=" + userId + ", eventId=" + eventId + ", place=" + place +
-                ", category=" + category + " and returning " + ticket);
+        logger.debug("bookTicket was invoked with userId={}, eventId={}, place={}, category={} and returning {}", userId, eventId, place, category, ticket);
         return ticket;
     }
 
     @Override
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
         final List<Ticket> tickets = ticketDao.getBookedTickets(user, pageSize, pageNum);
-        logger.debug("getBookedTickets was invoked user=" + user + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returning " + tickets.toString());
+        logger.debug("getBookedTickets was invoked user={}, pageSize={}, pageNum={} and returning {}", user, pageSize, pageNum, tickets);
         return tickets;
     }
 
     @Override
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         final List<Ticket> tickets = ticketDao.getBookedTickets(event, pageSize, pageNum);
-        logger.debug("getBookedTickets was invoked with event=" + event + ", pageSize=" + pageSize +
-                ", pageNum=" + pageNum + " and returning " + tickets);
+        logger.debug("getBookedTickets was invoked with event={}, pageSize={}, pageNum={} and returning {}", event, pageSize, pageNum, tickets);
         return tickets;
     }
 
     @Override
     public boolean cancelTicket(long ticketId) {
         final boolean result = ticketDao.delete(ticketId);
-        logger.debug("cancelTicket was invoked with ticketId=" + ticketId + " and returning " + result);
+        logger.debug("cancelTicket was invoked with ticketId={} and returning {}", ticketId, result);
         return result;
     }
 

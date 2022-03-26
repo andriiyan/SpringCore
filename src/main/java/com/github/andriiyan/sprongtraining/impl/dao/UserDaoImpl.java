@@ -30,21 +30,14 @@ class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst()
                 .orElse(null);
-        logger.debug("getUserByEmail was invoked with email=" + email + " and returning " + mUser);
+        logger.debug("getUserByEmail was invoked with email={} and returning {}", email, mUser);
         return mUser;
     }
 
     @Override
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
-        final List<User> users = StreamUtils.paging(
-                findAll()
-                        .stream()
-                        .filter(user -> user.getName().contains(name)),
-                pageNum,
-                pageSize
-        ).collect(Collectors.toList());
-        logger.debug("getUsersByName was invoked with name=" + name + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returning " + users.toString());
+        final List<User> users = findPage(pageNum, pageSize, user -> user.getName().contains(name));
+        logger.debug("getUsersByName was invoked with name={}, pageSize={}, pageNum={} and returning {}", name, pageSize, pageNum, users);
         return users;
     }
 }

@@ -29,27 +29,20 @@ class EventDaoImpl extends BaseDaoImpl<Event> implements EventDao {
 
     @Override
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
-        final List<Event> events = StreamUtils.paging(findAll()
-                .stream()
-                .filter(event -> event.getTitle().contains(title)), pageNum, pageSize)
-                .collect(Collectors.toList());
-        logger.debug("getEventsByTitle was invoked with title=" + title + ", pageSize=" + pageSize + ", pageNum=" + pageNum
-                + " and returning " + events.toString());
+        final List<Event> events = findPage(pageNum, pageSize, event -> event.getTitle().contains(title));
+        logger.debug("getEventsByTitle was invoked with title={}, pageSize={}, pageNum={} and returning {}", title, pageSize, pageNum, events);
         return events;
     }
 
     @Override
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
         final Instant requestedDay = day.toInstant().truncatedTo(ChronoUnit.DAYS);
-        final List<Event> events = StreamUtils.paging(
-                findAll()
-                        .stream()
-                        .filter(event -> event.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).equals(requestedDay)),
+        final List<Event> events = findPage(
                 pageNum,
-                pageSize
-        ).collect(Collectors.toList());
-        logger.debug("getEventsForDay was invoked with day=" + day + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returning " + events.toString());
+                pageSize,
+                event -> event.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).equals(requestedDay)
+        );
+        logger.debug("getEventsForDay was invoked with day={}, pageSize={}, pageNum={} and returning {}", day, pageSize, pageNum, events);
         return events;
     }
 }
