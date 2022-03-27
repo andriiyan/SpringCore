@@ -53,11 +53,11 @@ class DumpUtils {
     DumpResult dump() {
         try {
             final Collection<User> users = dumpUsers();
-            logger.info("Users " + users.toString() + " were dumped into the " + rootFolder + "/users" + suffix());
+            logger.info("Users {} were dumped into the {}/users{}", users, rootFolder, suffix());
             final Collection<Event> events = dumpEvents();
-            logger.info("Events " + events.toString() + " were dumped into the " + rootFolder + "/events" + suffix());
+            logger.info("Events {} were dumped into the {}/events{}", events, rootFolder, suffix());
             final Collection<Ticket> tickets = dumpTickets();
-            logger.info("Tickets " + tickets.toString() + " were dumped into the " + rootFolder + "/tickets" + suffix());
+            logger.info("Tickets {} were dumped into the {}/tickets{}", tickets, rootFolder, suffix());
             return new DumpResult(events, users, tickets);
         } catch (IOException e) {
             e.printStackTrace();
