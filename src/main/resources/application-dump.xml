@@ -8,8 +8,6 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
        profile="dump">
     <context:property-placeholder location="classpath:dump.properties"/>
-    <!--  TODO: 3/20/2022 - this bean definition has wrong order of arguments -->
-    <!--  TODO: 3/20/2022 - you can use 'lazy-init="false" init-method="dump"'. This way you'll be able to remove Main.dumpIfCan method -->
     <bean id="dumpUtils" class="com.github.andriiyan.sprongtraining.impl.utils.DumpUtils" lazy-init="false" init-method="dump">
         <constructor-arg name="rootFolder" value="${dump.rootFolder}"/>
         <constructor-arg ref="fileUtils"/>

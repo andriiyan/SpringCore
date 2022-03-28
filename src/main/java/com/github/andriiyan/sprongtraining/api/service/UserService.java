@@ -1,6 +1,7 @@
 package com.github.andriiyan.sprongtraining.api.service;
 
 import com.github.andriiyan.sprongtraining.api.model.User;
+import com.github.andriiyan.sprongtraining.impl.dao.exception.ModelNotFoundException;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public interface UserService {
      * @param user User data for update. Should have id set.
      * @return Updated User object.
      */
-    User updateUser(User user);
+    User updateUser(User user) throws ModelNotFoundException;
 
     /**
      * Deletes user by its id.

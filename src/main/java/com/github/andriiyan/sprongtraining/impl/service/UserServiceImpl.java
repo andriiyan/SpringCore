@@ -3,6 +3,7 @@ package com.github.andriiyan.sprongtraining.impl.service;
 import com.github.andriiyan.sprongtraining.api.dao.UserDao;
 import com.github.andriiyan.sprongtraining.api.model.User;
 import com.github.andriiyan.sprongtraining.api.service.UserService;
+import com.github.andriiyan.sprongtraining.impl.dao.exception.ModelNotFoundException;
 import com.github.andriiyan.sprongtraining.impl.utils.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,53 +22,42 @@ class UserServiceImpl implements UserService {
     @Override
     public User getUserById(long userId) {
         final User user = userDao.findById(userId);
-        logger.info("getUserById was invoked with userId=" + userId + " and returning " + user);
+        logger.debug("getUserById was invoked with userId={} and returning {}", userId, user);
         return user;
     }
 
     @Override
     public User getUserByEmail(String email) {
-        final User mUser = userDao.findAll()
-                .stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .orElse(null);
-        logger.info("getUserByEmail was invoked with email=" + email + " and returning " + mUser);
+        final User mUser = userDao.getUserByEmail(email);
+        logger.debug("getUserByEmail was invoked with email={} and returning {}", email, mUser);
         return mUser;
     }
 
     @Override
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
-        final List<User> users = StreamUtils.paging(
-                userDao.findAll()
-                        .stream()
-                        .filter(user -> user.getName().contains(name)),
-                pageNum,
-                pageSize
-        ).collect(Collectors.toList());
-        logger.info("getUsersByName was invoked with name=" + name + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returning " + users.toString());
+        final List<User> users = userDao.getUsersByName(name, pageSize, pageNum);
+        logger.debug("getUsersByName was invoked with name={}, pageSize={}, pageNum={} and returning {}", name, pageSize, pageNum, users);
         return users;
     }
 
     @Override
     public User createUser(User user) {
         final User mUser = userDao.save(user);
-        logger.info("createUser was invoked with user=" + user + " and returning " + mUser);
+        logger.debug("createUser was invoked with user={} and returning {}", user, mUser);
         return mUser;
     }
 
     @Override
-    public User updateUser(User user) {
+    public User updateUser(User user) throws ModelNotFoundException {
         final User mUser = userDao.update(user);
-        logger.info("updateUser was invoked with user=" + user  + " and returning " + mUser);
+        logger.debug("updateUser was invoked with user={} and returning {}", user, mUser);
         return mUser;
     }
 
     @Override
     public boolean deleteUser(long userId) {
         final boolean result = userDao.delete(userId);
-        logger.info("deleteUser was invoked with userId=" + userId + " and returning " + result);
+        logger.debug("deleteUser was invoked with userId={} and returning {}", userId, result);
         return result;
     }
 

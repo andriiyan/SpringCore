@@ -3,8 +3,8 @@ package com.github.andriiyan.sprongtraining.impl.service;
 import com.github.andriiyan.sprongtraining.api.dao.EventDao;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.impl.TestModelsFactory;
+import com.github.andriiyan.sprongtraining.impl.dao.exception.ModelNotFoundException;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,15 +21,8 @@ public class EventServiceImplTest {
     @Mock
     private EventDao eventDao;
 
-    // TODO: 3/20/2022 - Please use @InjectMocks where possible
     @InjectMocks
     private EventServiceImpl eventService;
-/*
-    @Before
-    public void init() {
-        eventService = new EventServiceImpl();
-        eventService.setEventDao(eventDao);
-    }*/
 
     @Test
     public void getEventById_shouldReturnSameModelAsDao() {
@@ -49,20 +42,14 @@ public class EventServiceImplTest {
         final int pageNum = 1;
 
         // generating events for the 5 pages
-        final List<Event> returningEvents = TestModelsFactory.generateEvents(5 * pageSize, new TestModelsFactory.DefaultEventCountInstanceFactory() {
-            @Override
-            protected String title(int count) {
-                return title + count;
-            }
-        });
+        final List<Event> returningEvents = TestModelsFactory.generateEvents(5 * pageSize);
 
-        Mockito.when(eventDao.findAll()).thenReturn(returningEvents);
+        Mockito.when(eventDao.getEventsByTitle(title, pageSize, pageNum)).thenReturn(returningEvents);
         final List<Event> returnedEvents = eventService.getEventsByTitle(title, pageSize, pageNum);
 
-        returnedEvents.forEach(event -> Assert.assertTrue(event.getTitle().contains(title)));
-        Assert.assertEquals(returningEvents.subList(pageSize * pageNum, pageSize * pageNum + pageSize), returnedEvents);
+        Assert.assertEquals(returningEvents, returnedEvents);
 
-        Mockito.verify(eventDao).findAll();
+        Mockito.verify(eventDao).getEventsByTitle(title, pageSize, pageNum);
     }
 
     @Test
@@ -72,19 +59,14 @@ public class EventServiceImplTest {
         final int pageNum = 1;
 
         // generating events for the 5 pages
-        final List<Event> returningEvents = TestModelsFactory.generateEvents(5 * pageSize, new TestModelsFactory.DefaultEventCountInstanceFactory() {
-            @Override
-            protected Date date(int count) {
-                return date;
-            }
-        });
+        final List<Event> returningEvents = TestModelsFactory.generateEvents(5 * pageSize);
 
-        Mockito.when(eventDao.findAll()).thenReturn(returningEvents);
+        Mockito.when(eventDao.getEventsForDay(date, pageSize, pageNum)).thenReturn(returningEvents);
         final List<Event> returnedEvents = eventService.getEventsForDay(date, pageSize, pageNum);
 
-        Assert.assertEquals(returningEvents.subList(pageSize * pageNum, pageSize * pageNum + pageSize), returnedEvents);
+        Assert.assertEquals(returningEvents, returnedEvents);
 
-        Mockito.verify(eventDao).findAll();
+        Mockito.verify(eventDao).getEventsForDay(date, pageSize, pageNum);
     }
 
     @Test
@@ -99,7 +81,7 @@ public class EventServiceImplTest {
     }
 
     @Test
-    public void updateEvent_shouldReturnSameModelAsDao() {
+    public void updateEvent_shouldReturnSameModelAsDao() throws ModelNotFoundException {
         final Event updatingEvent = TestModelsFactory.generateSingleEvent();
         final Event returningEvent = TestModelsFactory.generateSingleEvent();
         Mockito.when(eventDao.update(updatingEvent)).thenReturn(returningEvent);

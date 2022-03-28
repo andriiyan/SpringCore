@@ -1,14 +1,15 @@
 package com.github.andriiyan.sprongtraining.impl.facade;
 
-import com.github.andriiyan.sprongtraining.api.facade.BookingFacade;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.model.Ticket;
 import com.github.andriiyan.sprongtraining.api.model.User;
 import com.github.andriiyan.sprongtraining.api.service.EventService;
 import com.github.andriiyan.sprongtraining.api.service.TicketService;
 import com.github.andriiyan.sprongtraining.api.service.UserService;
+import com.github.andriiyan.sprongtraining.impl.dao.exception.ModelNotFoundException;
+import com.github.andriiyan.sprongtraining.impl.model.EventEntity;
+import com.github.andriiyan.sprongtraining.impl.model.UserEntity;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -30,7 +31,6 @@ public class BookingFacadeImplTest {
     @Mock
     private UserService userService;
 
-    // TODO: 3/20/2022 - Please use @InjectMocks where possible
     @InjectMocks
     private BookingFacadeImpl bookingFacade;
 
@@ -38,17 +38,6 @@ public class BookingFacadeImplTest {
      * To make sure implementation not tied to some particular values.
      */
     private final Random random = new Random(System.currentTimeMillis());
-
-    // TODO: 3/20/2022 No constructors should be present in tests
-    public BookingFacadeImplTest() {
-        super();
-    }
-/*
-    @Before
-    public void setupMocks() {
-        // creating BookingFacadeImpl with the mocks, and instantiate models
-        bookingFacade = Mockito.spy(new BookingFacadeImpl(eventService, ticketService, userService));
-    }*/
 
     @Test
     public void getEventById_should_be_delegated() {
@@ -95,9 +84,6 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningEvents, facadeEvents);
 
         Mockito.verify(eventService).getEventsForDay(date, pageSize, pageNum);
-
-        // TODO: 3/20/2022 - what's the point in this verification? You already called this method in line 94
-        //Mockito.verify(bookingFacade).getEventsForDay(date, pageSize, pageNum);
     }
 
     @Test
@@ -110,11 +96,10 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningEvent, facadeEvent);
 
         Mockito.verify(eventService).createEvent(creatingEvent);
-        //Mockito.verify(bookingFacade).createEvent(creatingEvent);
     }
 
     @Test
-    public void updateEvent_should_be_delegated() {
+    public void updateEvent_should_be_delegated() throws ModelNotFoundException {
         Event returningEvent = Mockito.mock(Event.class);
         Event updatingEvent = Mockito.mock(Event.class);
         Mockito.when(eventService.updateEvent(updatingEvent)).thenReturn(returningEvent);
@@ -123,7 +108,15 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningEvent, facadeEvent);
 
         Mockito.verify(eventService).updateEvent(updatingEvent);
-        //Mockito.verify(bookingFacade).updateEvent(updatingEvent);
+    }
+
+    @Test(expected = ModelNotFoundException.class)
+    public void updateEvent_should_throw_an_exception() throws ModelNotFoundException {
+        long id = 100;
+        Event updatingEvent = Mockito.mock(Event.class);
+        Mockito.when(eventService.updateEvent(updatingEvent)).thenThrow(new ModelNotFoundException(id, EventEntity.class.getName()));
+
+        bookingFacade.updateEvent(updatingEvent);
     }
 
     @Test
@@ -135,7 +128,6 @@ public class BookingFacadeImplTest {
         Assert.assertTrue(facadeResult);
 
         Mockito.verify(eventService).deleteEvent(deletingEventId);
-        //Mockito.verify(bookingFacade).deleteEvent(deletingEventId);
     }
 
     @Test
@@ -148,7 +140,6 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningUser, facadeUser);
 
         Mockito.verify(userService).getUserById(userId);
-        //Mockito.verify(bookingFacade).getUserById(userId);
     }
 
     @Test
@@ -161,7 +152,6 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningUser, facadeUser);
 
         Mockito.verify(userService).getUserByEmail(userEmail);
-        //Mockito.verify(bookingFacade).getUserByEmail(userEmail);
     }
 
     @Test
@@ -176,7 +166,6 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningUsers, facadeUsers);
 
         Mockito.verify(userService).getUsersByName(userName, pageSize, pageNum);
-        //Mockito.verify(bookingFacade).getUsersByName(userName, pageSize, pageNum);
     }
 
 
@@ -190,11 +179,10 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningUser, facadeUser);
 
         Mockito.verify(userService).createUser(creatingUser);
-        //Mockito.verify(bookingFacade).createUser(creatingUser);
     }
 
     @Test
-    public void updateUser_should_be_delegated() {
+    public void updateUser_should_be_delegated() throws ModelNotFoundException {
         User returningUser = Mockito.mock(User.class);
         User updatingUser = Mockito.mock(User.class);
         Mockito.when(userService.updateUser(updatingUser)).thenReturn(returningUser);
@@ -203,7 +191,15 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningUser, facadeUser);
 
         Mockito.verify(userService).updateUser(updatingUser);
-        //Mockito.verify(bookingFacade).updateUser(updatingUser);
+    }
+
+    @Test(expected = ModelNotFoundException.class)
+    public void updateUser_should_throw_an_exception() throws ModelNotFoundException {
+        User updatingUser = Mockito.mock(User.class);
+        long id = 10;
+        Mockito.when(userService.updateUser(updatingUser)).thenThrow(new ModelNotFoundException(id, UserEntity.class.getName()));
+
+        bookingFacade.updateUser(updatingUser);
     }
 
     @Test
@@ -215,7 +211,6 @@ public class BookingFacadeImplTest {
         Assert.assertTrue(facadeResult);
 
         Mockito.verify(userService).deleteUser(deletingUserId);
-        //Mockito.verify(bookingFacade).deleteUser(deletingUserId);
     }
 
     @Test
@@ -231,7 +226,6 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningTicket, facadeTicket);
 
         Mockito.verify(ticketService).bookTicket(userId, eventId, place, Ticket.Category.BAR);
-        //Mockito.verify(bookingFacade).bookTicket(userId, eventId, place, Ticket.Category.BAR);
     }
 
     @Test
@@ -247,7 +241,6 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningTickets, facadeTickets);
 
         Mockito.verify(ticketService).getBookedTickets(user, pageSize, pageNum);
-        //Mockito.verify(bookingFacade).getBookedTickets(user, pageSize, pageNum);
     }
 
     @Test
@@ -263,7 +256,6 @@ public class BookingFacadeImplTest {
         Assert.assertEquals(returningTickets, facadeTickets);
 
         Mockito.verify(ticketService).getBookedTickets(event, pageSize, pageNum);
-        //Mockito.verify(bookingFacade).getBookedTickets(event, pageSize, pageNum);
     }
 
     @Test
@@ -276,7 +268,6 @@ public class BookingFacadeImplTest {
         Assert.assertTrue(facadeResult);
 
         Mockito.verify(ticketService).cancelTicket(ticketId);
-        //Mockito.verify(bookingFacade).cancelTicket(ticketId);
     }
 
 }

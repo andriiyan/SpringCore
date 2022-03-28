@@ -3,6 +3,7 @@ package com.github.andriiyan.sprongtraining.impl.service;
 import com.github.andriiyan.sprongtraining.api.dao.EventDao;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.service.EventService;
+import com.github.andriiyan.sprongtraining.impl.dao.exception.ModelNotFoundException;
 import com.github.andriiyan.sprongtraining.impl.utils.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,56 +25,42 @@ class EventServiceImpl implements EventService {
     @Override
     public Event getEventById(long eventId) {
         final Event event = eventDao.findById(eventId);
-        logger.info("getEventById was invoked with userId=" + eventId + " and returning " + event);
+        logger.debug("getEventById was invoked with userId={} and returning {}", eventId, event);
         return event;
     }
 
     @Override
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
-        // TODO: 3/20/2022 - If you change dao to read from DB, you will have to change two classes. Move this logic to eventDao, so you will have one place to change
-        final List<Event> events = StreamUtils.paging(eventDao.findAll()
-                .stream()
-                .filter(event -> event.getTitle().contains(title)), pageNum, pageSize)
-                .collect(Collectors.toList());
-        logger.info("getEventsByTitle was invoked with title=" + title + ", pageSize=" + pageSize + ", pageNum=" + pageNum
-                + " and returning " + events.toString());
+        final List<Event> events = eventDao.getEventsByTitle(title, pageSize, pageNum);
+        logger.debug("getEventsByTitle was invoked with title={}, pageSize={}, pageNum={} and returning {}", title, pageSize, pageNum, events);
         return events;
     }
 
     @Override
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
-        final Instant requestedDay = day.toInstant().truncatedTo(ChronoUnit.DAYS);
-        // TODO: 3/20/2022 - same here and in all similar places
-        final List<Event> events = StreamUtils.paging(
-                eventDao.findAll()
-                        .stream()
-                        .filter(event -> event.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).equals(requestedDay)),
-                pageNum,
-                pageSize
-        ).collect(Collectors.toList());
-        logger.info("getEventsForDay was invoked with day=" + day + ", pageSize=" + pageSize + ", pageNum=" + pageNum +
-                " and returning " + events.toString());
+        final List<Event> events = eventDao.getEventsForDay(day, pageSize, pageNum);
+        logger.debug("getEventsForDay was invoked with day={}, pageSize={}, pageNum={} and returning {}", day, pageSize, pageNum, events);
         return events;
     }
 
     @Override
     public Event createEvent(Event event) {
         final Event mEvent = eventDao.save(event);
-        logger.info("createEvent was invoked with event=" + event + " and returning " + mEvent);
+        logger.debug("createEvent was invoked with event={} and returning {}", event, mEvent);
         return mEvent;
     }
 
     @Override
-    public Event updateEvent(Event event) {
+    public Event updateEvent(Event event) throws ModelNotFoundException {
         final Event mEvent = eventDao.update(event);
-        logger.info("updateEvent was invoked with event=" + event  + " and returning " + mEvent);
+        logger.debug("updateEvent was invoked with event={} and returning {}", event, mEvent);
         return mEvent;
     }
 
     @Override
     public boolean deleteEvent(long eventId) {
         final boolean result = eventDao.delete(eventId);
-        logger.info("deleteEvent was invoked with eventId=" + eventId + " and returning " + result);
+        logger.debug("deleteEvent was invoked with eventId={} and returning {}", eventId, result);
         return result;
     }
 

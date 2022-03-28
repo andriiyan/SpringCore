@@ -6,26 +6,37 @@
         https://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd"
-       profile="json">
+       profile="json"
+       default-lazy-init="true">
     <!--  For reading properties files -->
     <context:property-placeholder location="classpath:dump.properties,classpath:dump-json.properties"/>
-    <bean id="userJsonInstanceCreator" class="com.github.andriiyan.sprongtraining.impl.model.UserImpl.UserJsonInstanceCreator"/>
-    <bean id="ticketJsonInstanceCreator" class="com.github.andriiyan.sprongtraining.impl.model.TicketImpl.TicketJsonInstanceCreator"/>
-    <bean id="eventJsonInstanceCreator" class="com.github.andriiyan.sprongtraining.impl.model.EventImpl.EventJsonInstanceCreator"/>
-    <bean id="jsonSerializer" class="com.github.andriiyan.sprongtraining.impl.utils.file.serializer.JsonSerializer" autowire="byType"/>
+    <bean id="userJsonInstanceCreator"
+          class="com.github.andriiyan.sprongtraining.impl.model.UserEntity.UserJsonInstanceCreator"/>
+    <bean id="ticketJsonInstanceCreator"
+          class="com.github.andriiyan.sprongtraining.impl.model.TicketEntity.TicketJsonInstanceCreator"/>
+    <bean id="eventJsonInstanceCreator"
+          class="com.github.andriiyan.sprongtraining.impl.model.EventEntity.EventJsonInstanceCreator"/>
+    <bean id="jsonSerializer" class="com.github.andriiyan.sprongtraining.impl.utils.file.serializer.JsonSerializer"
+          autowire="byType"/>
     <bean id="fileUtils" class="com.github.andriiyan.sprongtraining.impl.utils.file.FileUtils">
         <constructor-arg ref="jsonSerializer"/>
     </bean>
-    <bean id="eventDao" class="com.github.andriiyan.sprongtraining.impl.dao.EventDaoImpl" init-method="initialize" lazy-init="true">
+    <bean id="eventStorage" class="com.github.andriiyan.sprongtraining.impl.storage.StorageImpl"
+          init-method="initialize">
         <property name="initializationFilePath" value="${dao.event.initializationFilePath}"/>
         <property name="fileUtils" ref="fileUtils"/>
+        <property name="templateClassName" value="com.github.andriiyan.sprongtraining.api.model.Event"/>
     </bean>
-    <bean id="ticketDao" class="com.github.andriiyan.sprongtraining.impl.dao.TicketDaoImpl" init-method="initialize" lazy-init="true">
+    <bean id="ticketStorage" class="com.github.andriiyan.sprongtraining.impl.storage.StorageImpl"
+          init-method="initialize">
         <property name="initializationFilePath" value="${dao.ticket.initializationFilePath}"/>
         <property name="fileUtils" ref="fileUtils"/>
+        <property name="templateClassName" value="com.github.andriiyan.sprongtraining.api.model.Ticket"/>
     </bean>
-    <bean id="userDao" class="com.github.andriiyan.sprongtraining.impl.dao.UserDaoImpl" init-method="initialize" lazy-init="true">
+    <bean id="userStorage" class="com.github.andriiyan.sprongtraining.impl.storage.StorageImpl"
+          init-method="initialize">
         <property name="initializationFilePath" value="${dao.user.initializationFilePath}"/>
         <property name="fileUtils" ref="fileUtils"/>
+        <property name="templateClassName" value="com.github.andriiyan.sprongtraining.api.model.User"/>
     </bean>
 </beans>

@@ -3,6 +3,7 @@ package com.github.andriiyan.sprongtraining.api.facade;
 import com.github.andriiyan.sprongtraining.api.model.Event;
 import com.github.andriiyan.sprongtraining.api.model.Ticket;
 import com.github.andriiyan.sprongtraining.api.model.User;
+import com.github.andriiyan.sprongtraining.impl.dao.exception.ModelNotFoundException;
 
 import java.util.Date;
 import java.util.List;
@@ -51,7 +52,7 @@ public interface BookingFacade {
      * @param event Event data for update. Should have id set.
      * @return Updated Event object.
      */
-    Event updateEvent(Event event);
+    Event updateEvent(Event event) throws ModelNotFoundException;
 
     /**
      * Deletes event by its id.
@@ -94,7 +95,7 @@ public interface BookingFacade {
      * @param user User data for update. Should have id set.
      * @return Updated User object.
      */
-    User updateUser(User user);
+    User updateUser(User user) throws ModelNotFoundException;
 
     /**
      * Deletes user by its id.

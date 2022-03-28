@@ -1,5 +1,7 @@
 package com.github.andriiyan.sprongtraining.impl.utils.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
 import java.io.*;
@@ -9,6 +11,8 @@ import java.util.Collection;
  * Utility class for writing and reading info from the file.
  */
 public class FileUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     private final Serializer serializer;
 
@@ -30,25 +34,24 @@ public class FileUtils {
      * @throws IOException in case any IO exceptions during serialization.
      */
     public <T> boolean writeIntoFile(final String path, final Collection<T> items) throws IOException {
+        boolean isReady = true;
         final File file = new File(path);
-        // create new file and set it's permission to the writable
         if (!file.exists()) {
             final File folder = file.getParentFile();
-            if (!folder.exists() && !folder.mkdirs()) {
-                return false;
-            }
-            if (!file.createNewFile()) return false;
+            isReady = (folder.exists() || folder.mkdirs()) && file.createNewFile();
         }
-        // TODO: 3/20/2022 - for readability it's better to follow single return rule where possible
-        // TODO: 3/20/2022 - for readability it's better to join if-statements with same outcome
-        if (!file.setWritable(true)) return false;
-        if (!file.setReadable(true)) return false;
-        final FileOutputStream fileOutputStream = new FileOutputStream(file, false);
-        final boolean result = serializer.serialize(items, fileOutputStream);
-        // TODO: 3/20/2022 - when working with IO you should protect yourself from exceptions and always close IO-streams using try-catch-finalize
-        fileOutputStream.flush();
-        fileOutputStream.close();
-        return result;
+        if (isReady) {
+            isReady = file.setReadable(true) && file.setWritable(true);
+        }
+        if (isReady) {
+            try (var fileOutputStream = new FileOutputStream(file, false)){
+                isReady = serializer.serialize(items, fileOutputStream);
+            } catch (Exception e) {
+                logger.error("Could not write to file", e);
+                isReady = false;
+            }
+        }
+        return isReady;
     }
 
     /**
@@ -65,15 +68,19 @@ public class FileUtils {
             @NonNull final Class<T> type
     ) throws IOException, ClassNotFoundException {
         if (!file.exists()) {
+            logger.error("File {} is not exists", file.getAbsoluteFile());
             throw new FileNotFoundException("File " + file.getAbsolutePath() + " not found.");
         }
         if (!file.canRead()) {
+            logger.error("File {} is not readable", file.getAbsoluteFile());
             throw new IOException("File " + file.getAbsolutePath() + " not readable.");
         }
-        final FileInputStream fileInputStream = new FileInputStream(file);
-        final Collection<T> readObjects = serializer.deserialize(fileInputStream, type);
-        fileInputStream.close();
-        return readObjects;
+        try (var fileInputStream = new FileInputStream(file)) {
+            return serializer.deserialize(fileInputStream, type);
+        } catch (Exception e) {
+            logger.error("Could not read from the file", e);
+            throw e;
+        }
     }
 
     /**
